@@ -69,28 +69,16 @@ void setup() {
 
 void write_to_sd(float temperature, float voltage){
   File dataFile = SD.open(filename, FILE_WRITE);
+
   if (dataFile){
     digitalWrite(STATUS_LED, HIGH);
   }
   else{
+    // FIXME: Hot-removing the SD doesn't seem to trigger this.
     digitalWrite(STATUS_LED, LOW);
   }
 
   unsigned long time_code = millis() / 1000;
-  /*
-  String dataString = "";
-  
-  dataString += String(time_code);
-  dataString += F(", ");
-  dataString += String(temperature);
-  dataString += F(", ");
-  dataString += String(voltage);
-  dataString += F(", ");
-  dataString += String(freeMemory());
-
-  dataFile.println(dataString);
-  dataFile.close();
-  */
 
   dataFile.print(time_code);
   dataFile.print(separator);
@@ -101,8 +89,8 @@ void write_to_sd(float temperature, float voltage){
   dataFile.print(freeMemory());
   dataFile.println();
   dataFile.close();
-  
 }
+
 
 void write_to_led(float number){
   // Blue zone
@@ -161,5 +149,4 @@ void loop() {
   write_to_led(temperature);
 
   delay(2000);
-  //delay(20);
 }
